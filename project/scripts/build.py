@@ -1,6 +1,8 @@
 import os
 import json
 import logging
+
+from llm_thread import LlmThread
 from llm_utils import add_message_chain, query_model, get_project_outline
 
 ### Setup Project Directory & Logging ###
@@ -56,40 +58,12 @@ for i in range(1,12):
         messages_build = add_message_chain(messages_build, "assistant", build_response)
         print_and_log(build_response)
         response_json = json.loads(build_response)
-    
-    while response_json["stage"] == "debug":
-        # New message chain for debugging
-        input("Press 'Enter' to continue with debugging...")
-        
-        if start:
-            prompt_debug = f"""
-            {prompt_overview}
-            The following is a response from the coding agent, it is your job to help debug this issue. Take a deep breath and break the problem into solveable steps.
-            {model_response}
-            """
-        
-            prompt_debug += f"current status of project folder: {get_project_outline()}\n"
-            start = False
-        else:
-            prompt_debug = f"Continue debugging."
-
-        messages_debug = add_message_chain(messages_debug, "user", prompt_debug)
-        model_response = query_model(messages_debug)
-        messages_debug = add_message_chain(messages_debug, "assistant", model_response)
-        print_and_log(model_response)
-        
-        response_json = json.loads(model_response)
         
     
     # Need to have model flag when task is complete, add internal loop to continue until this step is done
     # Save all model reponses to txt files for logging
     # add ability to send commands to terminal, return response
     # add extra field to terminal commands, to explain what the command does in one short sentence.
-    
-    # debug should be function
-    # basically opens a new thread that only has scope of the bug
-    # does not mess up the build thread
-    # once bug is fixed, build thread can be shown the fix and continue building
     
     
     
