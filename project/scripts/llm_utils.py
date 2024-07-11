@@ -6,12 +6,12 @@ client = anthropic.Anthropic(
     api_key=open("secret_key.txt", "r").read().strip(),
 )
 
-project_path = "/Users/jont/Desktop/blackjack"
+project_path = "/Users/jont/Desktop/blackjack/"
 
 def query_model(messages):
     model_response = client.messages.create(
         model="claude-3-5-sonnet-20240620",
-        max_tokens=1000,
+        max_tokens=2000,
         temperature=0.1,
         messages=messages,
     )
@@ -39,4 +39,6 @@ def get_project_outline():
     for root, dirs, files in os.walk(project_path):
         for file in files:
             project_files.append(os.path.join(root, file))
-            
+        for dir in dirs:
+            project_files.append(os.path.join(root, dir))
+    return str(project_files)
