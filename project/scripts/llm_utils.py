@@ -1,9 +1,10 @@
 import os
+import subprocess
 from pathlib import Path
 
 project_path = "/Users/jont/Desktop/blackjack/"
 
-def get_project_outline():
+def get_directory_tree() -> str:
     """
     Use project path to get all sub directories and files
     """
@@ -15,7 +16,7 @@ def get_project_outline():
             project_files.append(os.path.join(root, dir))
     return str(project_files)
 
-def create_directory(directory_path: str):
+def create_directory(directory_path: str) -> str:
     """
     Creates a directory at the given path
     """
@@ -28,7 +29,7 @@ def create_directory(directory_path: str):
     except Exception as e:
         return str(e)
 
-def modify_file(file_path: str, content: str):
+def modify_file(file_path: str, content: str) -> str:
     """
     Creates a file at the given path with the given content
     """
@@ -46,7 +47,7 @@ def modify_file(file_path: str, content: str):
     except Exception as e:
         return str(e)
     
-def read_file(file_path: str):
+def read_file(file_path: str) -> str:
     """
     Reads and returns the content of a file
     """
@@ -59,8 +60,29 @@ def read_file(file_path: str):
         return content
     
     return ""
+
+def execute_terminal_command(command: str, command_description: str) -> str:
+    """
+    Executes terminal command and returns the output
+    """
+    print("\n**** ATTENTION ****\n")
+    execute_decision = input(f"Command: {command}\nExplaination: {command_description}\nExecute? (y/n): ")
+    if execute_decision.lower() != "y":
+        return "User Denied Command Execution"
     
+    try:
+        # Run the command, capture output, use shell, and combine stdout and stderr
+        result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=project_path)
+        
+        # Combine stdout and stderr
+        output = result.stdout + result.stderr
+        
+        # If the command was unsuccessful, add the return code to the output
+        if result.returncode != 0:
+            output += f"\nCOMMAND_FAILURE with return code: {result.returncode}"
+        
+        print(output.strip())
+        return output.strip()
     
-    
-# TODO: add ability to send commands to terminal, return response
-# TODO: add extra field to terminal commands, to explain what the command does in one short sentence.
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
