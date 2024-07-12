@@ -23,15 +23,15 @@ class LlmThread:
     
         self.add_to_message_chain("user", user_text)
 
-        logger.info(f"Prompting model: {user_text}")
-        model_response = client.messages.create(
+        self.logger.info(f"Prompting model: {user_text}")
+        model_response = self.client.messages.create(
             model="claude-3-5-sonnet-20240620",
             max_tokens=2000,
             temperature=0.1,
             messages=self.messages,
         )
         response_text = model_response.content[0].text
-        logger.info(f"Model Response: {response_text}")
+        self.logger.info(f"Model Response: {response_text}")
 
         self.add_to_message_chain("assistant", response_text)
 

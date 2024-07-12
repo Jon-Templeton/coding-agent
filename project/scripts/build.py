@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import anthropic
 
 from llm_thread import LlmThread
 from llm_utils import add_message_chain, query_model, get_project_outline
@@ -20,6 +21,9 @@ logger.info("*** Script Started ***")
 def print_and_log(message):
     print(message)
     logger.info(message)
+    
+# Connect to Anthropic API
+client = anthropic.Anthropic(api_key=open("secret_key.txt", "r").read().strip(),)
 
 # Load Development Plan
 with open(os.path.join(desktop_path, "development_plan.txt"), "r") as file:
@@ -32,39 +36,27 @@ You are an ai coding agent. You will have no help from the user. All tasks shoul
 
 # Loop through each task in the development plan, manually set for now
 for i in range(1,12):
-    messages_build = []
-    messages_debug = []
-    debug_start = True
-
     # Create prompt for each task
     prompt_build = prompt_overview + f"Here is the outline: {development_plan}"
     prompt_build += f"current status of project folder: {get_project_outline()}\n"
     prompt_build += f"Complete Task {i} from project outline: "
     
+    # Create LLM Thread
+    build_thread = LlmThread(client, logger)
     # Query the model
-    messages_build = add_message_chain(messages_build, "user", prompt_build)
-    build_response = query_model(messages_build)
-    messages_build = add_message_chain(messages_build, "assistant", build_response)
-    print_and_log(build_response)
-    #convert response to json, check current stage
-    response_json = json.loads(build_response)
+    response_json = build_thread.query_model(prompt_build)
+    print(response_json)
     
     # Handle Each Stage
     while response_json["stage"] == "incomplete":
-        # Continue same message chain
         input("Press 'Enter' to continue building...")
-        messages_build = add_message_chain(messages_build, "user", "Stage not complete, please return the next tasks.")
-        build_response = query_model(messages_build)
-        messages_build = add_message_chain(messages_build, "assistant", build_response)
-        print_and_log(build_response)
-        response_json = json.loads(build_response)
-        
+        response_json = build_thread.query_model("Stage not complete, please return the next tasks.")
+        print(response_json)
     
     # Need to have model flag when task is complete, add internal loop to continue until this step is done
     # Save all model reponses to txt files for logging
     # add ability to send commands to terminal, return response
     # add extra field to terminal commands, to explain what the command does in one short sentence.
-    
     
     
     input("Press 'Enter' to continue...")
