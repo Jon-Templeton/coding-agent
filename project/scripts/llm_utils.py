@@ -1,5 +1,3 @@
-import anthropic
-import json
 import os
 
 project_path = "/Users/jont/Desktop/blackjack/"
@@ -13,3 +11,6 @@ def get_project_outline():
         for dir in dirs:
             project_files.append(os.path.join(root, dir))
     return str(project_files)
+
+# TODO: add ability to send commands to terminal, return response
+# TODO: add extra field to terminal commands, to explain what the command does in one short sentence.

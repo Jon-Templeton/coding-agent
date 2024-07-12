@@ -13,7 +13,7 @@ class LlmThread:
         self.messages = []
         self.token_count = 0
 
-    def query_model(self, user_text) -> json:
+    def query_model(self, user_text: str, json:bool = True) -> json:
         """
         Continues converstaion with claude model.
 
@@ -37,7 +37,9 @@ class LlmThread:
 
         # TODO: Track token count of conversation
 
-        return json.loads(response_text)
+        if json:
+            return json.loads(response_text)
+        return response_text
 
     def add_to_message_chain(self, role: str, text: str):
         self.messages.append(
