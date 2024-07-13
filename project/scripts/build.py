@@ -56,6 +56,7 @@ def build_project(client: anthropic.Anthropic, logger: logging.Logger, num_dev_s
                 if task["type"] == "write":
                     print(f"\nWriting to File: {task['file_path']}")
                     print(f"Description: {task['summary']}")
+                    input("\nPress 'Enter' to modify file...")
                     
                     modify_file(task["file_path"], task["content"])
                     
