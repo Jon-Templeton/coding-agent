@@ -1,6 +1,6 @@
 # Single Prompt - AI Coding Agent
 
-This project implements an AI coding agent capable of autonomously building software projects based on a single user prompt. It leverages the Anthropic API to generate and execute a development plan, creating a fully functional project with minimal human intervention.
+This project implements an AI coding agent capable of autonomously building software projects based on a single user prompt. It leverages the Anthropic API to execute the entire development process, creating a fully functional project with minimal human intervention.
 
 ## Features
 
