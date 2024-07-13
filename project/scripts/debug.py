@@ -11,7 +11,7 @@ class DebugIssue:
 
         param incoming_thread: LlmThread object that contains conversation with code bug.
         """
-        self.incoming_thread = incoming_messages
+        self.incoming_thread = incoming_thread
         self.debug_thread = LlmThread(client, logger)
 
         self.status = ""
@@ -26,4 +26,4 @@ class DebugIssue:
         """
         pass
 
-    # TODO: Class setup not complete
+    # TODO: Class setup not complete, think through how debugging process should work

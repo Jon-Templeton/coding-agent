@@ -22,7 +22,7 @@ logger.info("*** Script Started ***")
 client = anthropic.Anthropic(api_key=open("secret_key.txt", "r").read().strip())
 
 # Get Project Idea
-#idea_gather(client, logger)
+num_dev_steps = idea_gather(client, logger)
 
 # Build Project
-build_project(client, logger)
+build_project(client, logger, num_dev_steps)

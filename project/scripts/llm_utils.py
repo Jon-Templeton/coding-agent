@@ -16,19 +16,6 @@ def get_directory_tree() -> str:
             project_files.append(os.path.join(root, dir))
     return str(project_files)
 
-def create_directory(directory_path: str) -> str:
-    """
-    Creates a directory at the given path
-    """
-    try:
-        path = Path(directory_path)
-        path.mkdir(parents=True, exist_ok=True)
-        
-        return "Success"
-    
-    except Exception as e:
-        return str(e)
-
 def modify_file(file_path: str, content: str) -> str:
     """
     Creates a file at the given path with the given content
@@ -74,8 +61,6 @@ def execute_terminal_command(command: str, command_description: str) -> str:
     try:
         # Run the command, capture output, use shell, and combine stdout and stderr
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=project_path)
-        
-        # Combine stdout and stderr
         output = result.stdout + result.stderr
         
         # If the command was unsuccessful, add the return code to the output
