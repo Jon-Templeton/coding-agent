@@ -13,7 +13,7 @@ class LlmThread:
         self.messages = []
         self.token_count = 0
 
-    def query_model(self, user_text: str, json:bool = True) -> json:
+    def query_model(self, user_text: str, json_return:bool = True) -> json:
         """
         Continues converstaion with claude model.
 
@@ -26,7 +26,7 @@ class LlmThread:
         self.logger.info(f"Prompting model: {user_text}")
         model_response = self.client.messages.create(
             model="claude-3-5-sonnet-20240620",
-            max_tokens=2000,
+            max_tokens=4096,
             temperature=0.1,
             messages=self.messages,
         )
@@ -37,7 +37,7 @@ class LlmThread:
 
         # TODO: Track token count of conversation
 
-        if json:
+        if json_return:
             return json.loads(response_text)
         return response_text
 

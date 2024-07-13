@@ -57,14 +57,15 @@ def read_file(file_path: str) -> str:
         with open(path, mode="r") as file:
             content = file.read()
             
-        return content
+        return f"Here are the contents of {file_path}: {content}"
     
-    return ""
+    return f"{file_path} could not be found."
 
 def execute_terminal_command(command: str, command_description: str) -> str:
     """
     Executes terminal command and returns the output
     """
+    # Ask user for permission to execute the command
     print("\n**** ATTENTION ****\n")
     execute_decision = input(f"Command: {command}\nExplaination: {command_description}\nExecute? (y/n): ")
     if execute_decision.lower() != "y":

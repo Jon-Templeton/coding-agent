@@ -13,7 +13,7 @@ os.makedirs(log_path, exist_ok=True)
 ## Setup Logging ##
 logging.basicConfig(
     filename=os.path.join(log_path, "agent_log.txt"), 
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s (%(levelname)s): %(message)s')
 logger = logging.getLogger()
 logger.info("*** Script Started ***")
@@ -22,7 +22,7 @@ logger.info("*** Script Started ***")
 client = anthropic.Anthropic(api_key=open("secret_key.txt", "r").read().strip())
 
 # Get Project Idea
-idea_gather(client, logger)
+#idea_gather(client, logger)
 
 # Build Project
-#build_project(client, logger)
+build_project(client, logger)
