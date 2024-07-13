@@ -23,7 +23,7 @@ def idea_gather(client: anthropic.Anthropic, logger: logging.Logger):
     prompt = f"""
     Answer to the clarifying questions: {answers}
 
-    With this information, start laying out the project. What is the tech stack? You will have no outside help from the user. This means you should not add plans that require online web interaction like creating accounts and more. Create the plan based on tasks you are knowledgeable in. You have access to a mac terminal for installing libraries, creating files and directories, and more. Provide a numbered development outline."""
+    With this information, start laying out the project. What is the tech stack? You will have no outside help from the user. This means you should not add plans that require online web interaction like creating accounts and more. Create the plan based on tasks you are knowledgeable in. You have access to read files, write files, install libraries on mac. Provide a numbered development outline."""
     model_response = idea_thread.query_model(prompt, json=False)
 
     # save model_response to a txt file on desktop
