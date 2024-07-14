@@ -2,7 +2,7 @@ import os
 import logging
 import anthropic
 
-from llm_thread import LlmThread
+from project.classes.llm_thread import LlmThread
 
 def idea_gather(client: anthropic.Anthropic, logger: logging.Logger) -> int:
     idea_thread = LlmThread(client, logger)
@@ -34,6 +34,6 @@ def idea_gather(client: anthropic.Anthropic, logger: logging.Logger) -> int:
         f.write(model_response)
         
     # Find out how many steps
-    steps_response = idea_thread.query_model("How many steps are in the development plan? Return only and integer.", json_return=False)
+    steps_response = idea_thread.query_model("How many steps are in the development plan? Return only an integer.", json_return=False)
     
     return int(steps_response)

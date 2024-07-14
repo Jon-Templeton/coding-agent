@@ -1,3 +1,4 @@
 secret_key.txt
 .DS_Store
 *.pyc
+config.txt

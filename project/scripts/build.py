@@ -3,7 +3,7 @@ import json
 import logging
 import anthropic
 
-from llm_thread import LlmThread
+from project.classes.llm_thread import LlmThread
 from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command
 
 desktop_path = "/Users/jont/Desktop/blackjack/"
