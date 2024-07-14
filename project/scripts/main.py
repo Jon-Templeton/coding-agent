@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from project.classes.ai_project import AiProject
+from classes.ai_project import AiProject
 from idea_gathering import idea_gather
 from build import build_project
 
