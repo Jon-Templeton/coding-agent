@@ -2,9 +2,7 @@ import os
 import subprocess
 from pathlib import Path
 
-project_path = "/Users/jont/Desktop/blackjack/"
-
-def get_directory_tree() -> str:
+def get_directory_tree(project_path) -> str:
     """
     Use project path to get all sub directories and files
     """
@@ -48,7 +46,7 @@ def read_file(file_path: str) -> str:
     
     return f"{file_path} could not be found."
 
-def execute_terminal_command(command: str, command_description: str) -> str:
+def execute_terminal_command(command: str, command_description: str, project_path) -> str:
     """
     Executes terminal command and returns the output
     """

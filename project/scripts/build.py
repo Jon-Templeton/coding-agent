@@ -1,18 +1,17 @@
 import os
-import json
 import logging
 import anthropic
 
+from project.classes.ai_project import AiProject
 from project.classes.llm_thread import LlmThread
 from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command
 
-desktop_path = "/Users/jont/Desktop/blackjack/"
-# TODO: New logic for project path. Maybe use a config file to set the project path and api keys.
 # TODO: Consider removing terminal option from prompt after stage 1 or 2.
 
-def build_project(client: anthropic.Anthropic, logger: logging.Logger, num_dev_steps: int) -> None:
+def build_project(project: AiProject) -> None:
     # Load Development Plan
-    with open(os.path.join(desktop_path, "agent_logs/development_plan.txt"), "r") as file:
+    dev_plan_path = project.project_path / "logs" / "development_plan.txt"
+    with open(dev_plan_path, "r") as file:
         development_plan = file.read()
 
     ### Build Project ###
@@ -30,16 +29,16 @@ def build_project(client: anthropic.Anthropic, logger: logging.Logger, num_dev_s
     """
 
     # Loop through each stage in the development plan
-    for i in range(1,num_dev_steps + 1):
+    for i in range(1,project.num_dev_steps + 1):
         print(f"Building Stage {i}")
         
         # Create stage specific prompt
         prompt_build = prompt_overview + f"Here is the outline: {development_plan}"
-        prompt_build += f"current status of project folder: {get_directory_tree()}\n"
+        prompt_build += f"current status of project folder: {get_directory_tree(project.project_path)}\n"
         prompt_build += f"Complete Stage {i} from project outline."
         
         # Create LLM Thread and query the model
-        build_thread = LlmThread(client, logger)
+        build_thread = LlmThread(project.client, project.logger)
         response_json = build_thread.query_model(prompt_build)
         
         # Process Model Response
@@ -68,7 +67,7 @@ def build_project(client: anthropic.Anthropic, logger: logging.Logger, num_dev_s
                     
                 # Execute Terminal Command
                 elif task["type"] == "terminal":
-                    execute_terminal_command(task["command"], task["command_description"])
+                    execute_terminal_command(task["command"], task["command_description"], project.project_path)
                     # TODO: Passback terminal output to LLM in separate thread. Verify command was successful, troubleshoot if not.
                     
                 # Stage not complete. Continue building...

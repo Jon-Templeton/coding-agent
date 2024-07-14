@@ -1,11 +1,10 @@
-import os
-import logging
-import anthropic
+from pathlib import Path
 
+from project.classes.ai_project import AiProject
 from project.classes.llm_thread import LlmThread
 
-def idea_gather(client: anthropic.Anthropic, logger: logging.Logger) -> int:
-    idea_thread = LlmThread(client, logger)
+def idea_gather(project: AiProject):
+    idea_thread = LlmThread(project.client, project.logger)
 
     user_idea = input("What would you like to build: ")
     prompt = f"""
@@ -26,14 +25,11 @@ def idea_gather(client: anthropic.Anthropic, logger: logging.Logger) -> int:
     With this information, start laying out the project. What is the tech stack? You will have no outside help from the user. This means you should not add plans that require online web interaction like creating accounts and more. Create the plan based on tasks you are knowledgeable in. You have access to read files, write files, install libraries on mac. Provide a numbered development outline."""
     model_response = idea_thread.query_model(prompt, json_return=False)
 
-    # save model_response to a txt file on desktop
-    desktop_path = os.path.expanduser("~/Desktop")
-    file_path = os.path.join(desktop_path, "development_plan2.txt")
-
-    with open(file_path, "w") as f:
+    # Save development plan in project logs
+    dev_plan_path = project.project_path / "logs" / "development_plan.txt"
+    with open(dev_plan_path, "w") as f:
         f.write(model_response)
         
     # Find out how many steps
     steps_response = idea_thread.query_model("How many steps are in the development plan? Return only an integer.", json_return=False)
-    
-    return int(steps_response)
+    project.num_dev_steps = int(steps_response)
