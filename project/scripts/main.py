@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 import logging
 import anthropic
 
@@ -6,13 +6,15 @@ from idea_gathering import idea_gather
 from build import build_project
 
 ## Setup Project Directory ##
-desktop_path = "/Users/jont/Desktop/blackjack/"
-log_path = os.path.join(desktop_path, "agent_logs/")
-os.makedirs(log_path, exist_ok=True)
+folder_name = input("Enter Project Folder Name: ")
+project_path = Path.home() / "Desktop" / folder_name
+log_path = project_path / "logs"
+project_path.mkdir(parents=True, exist_ok=True)
+log_path.mkdir(parents=True, exist_ok=True)
 
 ## Setup Logging ##
 logging.basicConfig(
-    filename=os.path.join(log_path, "agent_log.txt"), 
+    filename= log_path / "agent_log.txt", 
     level=logging.INFO,
     format='%(asctime)s (%(levelname)s): %(message)s')
 logger = logging.getLogger()
