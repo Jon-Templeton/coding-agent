@@ -2,8 +2,8 @@ import os
 import logging
 import anthropic
 
-from project.classes.ai_project import AiProject
-from project.classes.llm_thread import LlmThread
+from classes.ai_project import AiProject
+from classes.llm_thread import LlmThread
 from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command
 
 # TODO: Consider removing terminal option from prompt after stage 1 or 2.
@@ -29,7 +29,8 @@ def build_project(project: AiProject) -> None:
     """
 
     # Loop through each stage in the development plan
-    for i in range(1,project.num_dev_steps + 1):
+    #for i in range(1,project.num_dev_steps + 1):
+    for i in range(2,11):
         print(f"Building Stage {i}")
         
         # Create stage specific prompt
@@ -45,7 +46,7 @@ def build_project(project: AiProject) -> None:
         process_stage = True
         while process_stage:
             process_stage = False
-            new_prompt = ""
+            file_reads = ""
             print(f"Response Summary: {response_json['summary']}")
             
             # Complete each task
@@ -55,14 +56,13 @@ def build_project(project: AiProject) -> None:
                 if task["type"] == "write":
                     print(f"\nWriting to File: {task['file_path']}")
                     print(f"Description: {task['summary']}")
-                    input("\nPress 'Enter' to modify file...")
                     
-                    modify_file(task["file_path"], task["content"])
+                    modify_file(task["file_path"], task["content"], project.project_path)
                     
                 # Read File
                 elif task["type"] == "read":
                     print(f"Reading file: {task['file_path']}")
-                    new_prompt += read_file(task["file_path"])
+                    file_reads += read_file(task["file_path"], project.project_path)
                     # TODO: If file is lengthy, passback each file in a seperate thread. Context window is not large enough for multiple read/writes of large files. Each thread would only modify their relevant file.
                     
                 # Execute Terminal Command
@@ -72,8 +72,9 @@ def build_project(project: AiProject) -> None:
                     
                 # Stage not complete. Continue building...
                 elif task["type"] == "Incomplete":
+                    # TODO: Check to make sure the prompt is not too long
                     process_stage = True
-                    response_json = build_thread.query_model("Continue building stage {i}")
+                    response_json = build_thread.query_model(f"{file_reads}\nContinue building stage {i}")
                 
         
         input("Press 'Enter' to continue to next stage...")
