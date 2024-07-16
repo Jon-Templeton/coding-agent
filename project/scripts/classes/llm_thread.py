@@ -26,15 +26,20 @@ class LlmThread:
         self.logger.info(f"Prompting model: {user_text}")
         model_response = self.client.messages.create(
             model="claude-3-5-sonnet-20240620",
-            max_tokens=4096,
+            max_tokens=8192,
             temperature=0.1,
             messages=self.messages,
         )
         response_text = model_response.content[0].text
         self.logger.info(f"Model Response: {response_text}")
+        
+        # Check if response is proper json format
+        try:
+            json.loads(response_text)
+        except:
+            response_text = self._handle_improper_response()
 
         self.add_to_message_chain("assistant", response_text)
-
         # TODO: Track token count of conversation
 
         if json_return:
@@ -53,3 +58,23 @@ class LlmThread:
                 ]
             }
         )
+        
+    def _handle_improper_response(self) -> str:
+        prompt = "Return one read/write task at a time. If there are more tasks, include 'Incomplete' as the final task."
+        self.add_to_message_chain("system", prompt)
+        
+        self.logger.info(f"Prompting model: {prompt}")
+        model_response = self.client.messages.create(
+            model="claude-3-5-sonnet-20240620",
+            max_tokens=8192,
+            temperature=0.1,
+            messages=self.messages,
+        )
+        response_text = model_response.content[0].text
+        self.logger.info(f"Model Response: {response_text}")
+        
+        try:
+            json.loads(response_text)
+            return response_text
+        except:
+            raise Exception("Model returned unformatted response.")

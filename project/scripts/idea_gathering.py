@@ -1,8 +1,9 @@
 from pathlib import Path
 
-from project.classes.ai_project import AiProject
-from project.classes.llm_thread import LlmThread
+from classes.ai_project import AiProject
+from classes.llm_thread import LlmThread
 
+# TODO: update the second prompt to say that the each stage should be solveable in the context window of one conversation (200k tokens).
 def idea_gather(project: AiProject):
     idea_thread = LlmThread(project.client, project.logger)
 

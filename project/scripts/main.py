@@ -9,7 +9,7 @@ folder_name = input("Enter Project Folder Name: ")
 project = AiProject(folder_name)
 
 # Get Project Idea
-idea_gather(project)
+#idea_gather(project)
 
 # Build Project
 build_project(project)
