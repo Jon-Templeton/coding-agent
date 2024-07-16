@@ -4,9 +4,7 @@ import anthropic
 
 from classes.ai_project import AiProject
 from classes.llm_thread import LlmThread
-from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command
-
-# TODO: Consider removing terminal option from prompt after stage 1 or 2.
+from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command, analyze_terminal_commands
 
 def build_project(project: AiProject) -> None:
     # Load Development Plan
@@ -21,6 +19,7 @@ def build_project(project: AiProject) -> None:
     The task section is a list of tasks with three options: 'read', 'write' and 'terminal'. 
     To read files from the project folder, [task][type] should be 'read', [task][file_path] should be path of file to read.
     If the response has read tasks, no write or terminal task should be included. After the final read task, the final task should be [task][type] = 'Incomplete'.
+    If you are modifying an existing file, it is encouraged to read it first.
     To write to a file, [task][type] should be 'write', [task][file_path] should be path of file to write, [task][summary] is 1 sentence summary, [task][content] is the file contents. Newline characters should be escaped with '\\n'.
     To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command. 
     
@@ -67,8 +66,10 @@ def build_project(project: AiProject) -> None:
                     
                 # Execute Terminal Command
                 elif task["type"] == "terminal":
-                    execute_terminal_command(task["command"], task["command_description"], project.project_path)
-                    # TODO: Passback terminal output to LLM in separate thread. Verify command was successful, troubleshoot if not.
+                    terminal_output = execute_terminal_command(task["command"], task["command_description"], project.project_path)
+
+                    if terminal_output != "User Denied Command Execution":
+                        analyze_terminal_commands(terminal_output)
                     
                 # Stage not complete. Continue building...
                 elif task["type"] == "Incomplete":
