@@ -29,7 +29,7 @@ def build_project(project: AiProject) -> None:
 
     # Loop through each stage in the development plan
     for i in range(1,project.num_dev_steps + 1):
-        print(f"Building Stage {i}")
+        print(f"\nBuilding Stage {i}")
         
         # Create stage specific prompt
         prompt_build = prompt_overview + f"Here is the outline: {development_plan}"
@@ -69,12 +69,11 @@ def build_project(project: AiProject) -> None:
 
                     if terminal_output != "User Denied Command Execution":
                         analyze_terminal_commands((task["command"], task["command_description"]), terminal_output, project)
+
+                    # TODO: Track all commands run. Since llm has no memory between stages, it tries to run the same command again.
                     
                 # Stage not complete. Continue building...
                 elif task["type"] == "Incomplete":
                     # TODO: Check to make sure the prompt is not too long
                     process_stage = True
                     response_json = build_thread.query_model(f"{file_reads}\nContinue building stage {i}. When complete, the final task should be 'Complete'.")
-                
-        
-        input("Press 'Enter' to continue to next stage...")

@@ -36,7 +36,8 @@ class LlmThread:
         
         # Check if response is proper json format
         try:
-            json.loads(response_text)
+            if json_return:
+                json.loads(response_text)
         except:
             response_text = self._handle_improper_response()
 
@@ -62,7 +63,7 @@ class LlmThread:
         
     def _handle_improper_response(self) -> str:
         prompt = "Return one read/write task at a time. If there are more tasks, include 'Incomplete' as the final task."
-        self.add_to_message_chain("system", prompt)
+        self.add_to_message_chain("user", prompt)
         
         self.logger.info(f"Prompting model: {prompt}")
         model_response = self.client.messages.create(

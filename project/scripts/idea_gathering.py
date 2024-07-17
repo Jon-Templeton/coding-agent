@@ -9,7 +9,7 @@ def idea_gather(project: AiProject):
 
     user_idea = input("What would you like to build: ")
     prompt = f"""
-    You are a coding agent who is responsible for creating the software described. This includes planning and development. Respond in only direct relevance to the current task. 
+    You are a coding agent who is responsible for creating the software described. This includes planning and development, do not include a testing step. Respond in only direct relevance to the current task. 
 
     This is the first stage of the process. Take a step back from the described project and find the root of the problem trying to be solved. How are these problems usually solved? What are the normal steps when solving a similar problem?
 
