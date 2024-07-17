@@ -2,6 +2,8 @@ import os
 import subprocess
 from pathlib import Path
 
+from classes.llm_thread import LlmThread
+
 def get_directory_tree(project_path) -> str:
     """
     Use project path to get all sub directories and files
@@ -65,11 +67,11 @@ def execute_terminal_command(command: str, command_description: str, project_pat
     """
     # Ask user for permission to execute the command
     print("\n**** ATTENTION ****\n")
-    execute_decision = input(f"Command: {command}\nExplaination: {command_description}\nExecute? (y/n): ")
-    # TODO: If execute decision is not 'y' or 'n', ask again
-            # use while loop to keep asking until user enters 'y' or 'n'
-    if execute_decision.lower() != "y":
-        return "User Denied Command Execution"
+    execute_decision = ""
+    while execute_decision != "y":
+        execute_decision = input(f"Command: {command}\nExplaination: {command_description}\nExecute? (y/n): ").lower()
+        if execute_decision == "n":
+            return "User Denied Command Execution"
     
     try:
         # TODO: if command launches an app, it will not return. Need to handle this.
@@ -83,8 +85,28 @@ def execute_terminal_command(command: str, command_description: str, project_pat
             output += f"\nCOMMAND_FAILURE with return code: {result.returncode}"
         
         print(output.strip())
-        # TODO: Need to log the output, logger should be passed into function
         return output.strip()
     
     except Exception as e:
         return f"An error occurred: {str(e)}"
+
+def analyze_terminal_commands(terminal_output: str):
+    """
+    Use LLM to check the result of command
+    """
+    terminal_debug_thread = LlmThread(project.client, project.logger)
+    terminal_prompt = f"""You are an ai coding agent. You will have no help from the user. All tasks should be completed by you. You have access to a mac terminal for installing libraries. You will be given a terminal command and it's output. It is your job to determine if it was successful. If it was a failure, you need analyze the terminal output and provide a better terminal command. Respond in json format with three fields: summary, result, new_command.
+    'summary' field should explain why the command was successful or why it failed.
+    'result' field should be one word: 'success' or 'fail'.
+    'new_command' field should be the new terminal command. If the result was a success, return an empty string in new_command.
+
+    Here is an explanation of the command: {task["command_description"]}
+    Here is the command: {task["command"]}
+    Here is the command output: {terminal_output}\n*End of command output*
+    """
+    terminal_analysis = terminal_debug_thread.query_model(terminal_prompt)
+    if terminal_analysis["result"] == "success":
+        print("Command Successful")
+    else:
+        print("Command Unsuccessful:", terminal_analysis["summary"])
+        execute_terminal_command(terminal_analysis["new_command"], "Trying different command", project.project_path)
