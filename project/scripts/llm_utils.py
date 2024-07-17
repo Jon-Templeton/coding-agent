@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 
 from classes.llm_thread import LlmThread
+from classes.ai_project import AiProject
 
 def get_directory_tree(project_path) -> str:
     """
@@ -90,7 +91,7 @@ def execute_terminal_command(command: str, command_description: str, project_pat
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
-def analyze_terminal_commands(terminal_output: str):
+def analyze_terminal_commands(terminal_input, terminal_output: str, project: AiProject):
     """
     Use LLM to check the result of command
     """
@@ -100,8 +101,8 @@ def analyze_terminal_commands(terminal_output: str):
     'result' field should be one word: 'success' or 'fail'.
     'new_command' field should be the new terminal command. If the result was a success, return an empty string in new_command.
 
-    Here is an explanation of the command: {task["command_description"]}
-    Here is the command: {task["command"]}
+    Here is an explanation of the command: {terminal_input[1]}
+    Here is the command: {terminal_input[0]}
     Here is the command output: {terminal_output}\n*End of command output*
     """
     terminal_analysis = terminal_debug_thread.query_model(terminal_prompt)

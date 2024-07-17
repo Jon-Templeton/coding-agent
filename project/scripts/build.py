@@ -19,7 +19,7 @@ def build_project(project: AiProject) -> None:
     The task section is a list of tasks with three options: 'read', 'write' and 'terminal'. 
     To read files from the project folder, [task][type] should be 'read', [task][file_path] should be path of file to read.
     If the response has read tasks, no write or terminal task should be included. After the final read task, the final task should be [task][type] = 'Incomplete'.
-    If you are modifying an existing file, it is encouraged to read it first.
+    When modifying an existing file, it is encouraged to read it first.
     To write to a file, [task][type] should be 'write', [task][file_path] should be path of file to write, [task][summary] is 1 sentence summary, [task][content] is the file contents. Newline characters should be escaped with '\\n'.
     To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command. Installs should be contained inside the project folder {project.project_path}.
     
@@ -68,7 +68,7 @@ def build_project(project: AiProject) -> None:
                     terminal_output = execute_terminal_command(task["command"], task["command_description"], project.project_path)
 
                     if terminal_output != "User Denied Command Execution":
-                        analyze_terminal_commands(terminal_output)
+                        analyze_terminal_commands((task["command"], task["command_description"]), terminal_output, project)
                     
                 # Stage not complete. Continue building...
                 elif task["type"] == "Incomplete":
