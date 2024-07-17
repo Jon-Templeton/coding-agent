@@ -29,6 +29,7 @@ class LlmThread:
             max_tokens=8192,
             temperature=0.1,
             messages=self.messages,
+            extra_headers={"anthropic-beta": "max-tokens-3-5-sonnet-2024-07-15"}
         )
         response_text = model_response.content[0].text
         self.logger.info(f"Model Response: {response_text}")

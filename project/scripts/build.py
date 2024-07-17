@@ -22,15 +22,14 @@ def build_project(project: AiProject) -> None:
     To read files from the project folder, [task][type] should be 'read', [task][file_path] should be path of file to read.
     If the response has read tasks, no write or terminal task should be included. After the final read task, the final task should be [task][type] = 'Incomplete'.
     To write to a file, [task][type] should be 'write', [task][file_path] should be path of file to write, [task][summary] is 1 sentence summary, [task][content] is the file contents. Newline characters should be escaped with '\\n'.
-    To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command. 
+    To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command. Installs should be contained inside the project folder {project.project_path}.
     
     A write task should include the entire file contents. If the file is lengthy, only include one write task per response.
     If the stage is not complete in one response, the final task should be [task][type] = 'Incomplete'.
     """
 
     # Loop through each stage in the development plan
-    #for i in range(1,project.num_dev_steps + 1):
-    for i in range(2,11):
+    for i in range(1,project.num_dev_steps + 1):
         print(f"Building Stage {i}")
         
         # Create stage specific prompt
@@ -74,7 +73,7 @@ def build_project(project: AiProject) -> None:
                 elif task["type"] == "Incomplete":
                     # TODO: Check to make sure the prompt is not too long
                     process_stage = True
-                    response_json = build_thread.query_model(f"{file_reads}\nContinue building stage {i}")
+                    response_json = build_thread.query_model(f"{file_reads}\nContinue building stage {i}. When complete, the final task should be 'Complete'.")
                 
         
         input("Press 'Enter' to continue to next stage...")

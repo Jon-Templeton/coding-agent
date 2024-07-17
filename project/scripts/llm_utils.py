@@ -7,13 +7,13 @@ def get_directory_tree(project_path) -> str:
     Use project path to get all sub directories and files
     """
     project_files = []
-    ignore_dirs = ['node_modules', '.git', 'venv']
+    ignore_dirs = ['node_modules', '.git', 'venv', 'logs']
     
     for root, dirs, files in os.walk(project_path):
         for ignore_dir in ignore_dirs:
             if ignore_dir in dirs:
                 dirs.remove(ignore_dir)
-                # TODO: Add string to project_files that describes the ignored directory, otherwise model gets confused why it's not there.
+                dirs.append(f"{ignore_dir} contents are ignored")
         
         for file in files:
             project_files.append(os.path.join(root, file))
@@ -53,7 +53,7 @@ def read_file(file_path_str: str, project_directory: Path) -> str:
         if file_path.is_file():
             with open(file_path, mode="r") as file:
                 content = file.read()
-            return f"Here are the contents of {file_path_str}: {content}"
+            return f"Here are the contents of {file_path_str}: {content}\nEnd of {file_path_str}"
         else:
             return f"{file_path_str} could not be found."
     else:

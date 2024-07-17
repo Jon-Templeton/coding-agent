@@ -12,4 +12,5 @@ project = AiProject(folder_name)
 #idea_gather(project)
 
 # Build Project
+project.num_dev_steps = 10
 build_project(project)
