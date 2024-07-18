@@ -1,7 +1,3 @@
-import os
-import logging
-import anthropic
-
 from classes.ai_project import AiProject
 from classes.llm_thread import LlmThread
 from llm_utils import get_directory_tree, read_file, modify_file, execute_terminal_command, analyze_terminal_commands
@@ -21,7 +17,7 @@ def build_project(project: AiProject) -> None:
     If the response has read tasks, no write or terminal task should be included. After the final read task, the final task should be [task][type] = 'Incomplete'.
     When modifying an existing file, it is encouraged to read it first.
     To write to a file, [task][type] should be 'write', [task][file_path] should be path of file to write, [task][summary] is 1 sentence summary, [task][content] is the file contents. Newline characters should be escaped with '\\n'.
-    To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command. Installs should be contained inside the project folder {project.project_path}.
+    To install libraries and packages, [task][type] should be 'terminal', [task][command] should be the mac terminal command to install the package, [task][command_description] should be a description of the command.
     
     A write task should include the entire file contents. If the file is lengthy, only include one write task per response.
     If the stage is not complete in one response, the final task should be [task][type] = 'Incomplete'.

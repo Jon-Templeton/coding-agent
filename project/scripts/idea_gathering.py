@@ -23,7 +23,7 @@ def idea_gather(project: AiProject):
     prompt = f"""
     Answer to the clarifying questions: {answers}
 
-    With this information, start laying out the project. What is the tech stack? You will have no outside help from the user. This means you should not add plans that require online web interaction like creating accounts and more. Create the plan based on tasks you are knowledgeable in. You have access to read files, write files, install libraries on mac. Provide a numbered development outline."""
+    With this information, start laying out the project. What is the tech stack? You will have no outside help from the user. This means you should not add plans that require online web interaction like creating accounts and more. Create the plan based on tasks you are knowledgeable in. You have access to read files, write files, install libraries on mac. The plan should have at least 10 steps. Provide a numbered development outline."""
     model_response = idea_thread.query_model(prompt, json_return=False)
 
     # Save development plan in project logs
