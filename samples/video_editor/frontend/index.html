@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Video Editor</h1>
+        </header>
+        <main>
+            <div id="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+            <section id="upload-section">
+                <h2>Upload Video</h2>
+                <div id="drop-area">
+                    <p>Drag and drop your video file here or click to select</p>
+                    <input type="file" id="file-input" accept="video/mp4">
+                </div>
+                <button id="upload-btn">Upload</button>
+            </section>
+            <section id="video-player">
+                <h2>Video Player</h2>
+                <video id="video" controls></video>
+                <div id="custom-controls">
+                    <button id="play-pause-btn">Play/Pause</button>
+                    <input type="range" id="seek-bar" value="0">
+                    <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+                </div>
+            </section>
+            <section id="trim-controls">
+                <h2>Trim Video</h2>
+                <div class="time-input">
+                    <label for="start-time">Start Time:</label>
+                    <input type="text" id="start-time-input" placeholder="0:00">
+                </div>
+                <div class="time-input">
+                    <label for="end-time">End Time:</label>
+                    <input type="text" id="end-time-input" placeholder="0:00">
+                </div>
+                <div id="timeline">
+                    <div id="progress-bar"></div>
+                    <div id="trim-start" class="trim-handle"></div>
+                    <div id="trim-end" class="trim-handle"></div>
+                    <div id="trim-selection"></div>
+                </div>
+                <button id="trim-btn">Trim Video</button>
+                <div id="trim-progress" style="display: none;"></div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Video Editor. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
