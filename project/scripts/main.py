@@ -15,8 +15,3 @@ idea_gather(project)
 
 # Build Project
 build_project(project)
-
-
-"""
-Create a web application that serves as a personal finance tracker. Include features for income and expense tracking, budget creation, and data visualization with charts.
-"""

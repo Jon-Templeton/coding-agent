@@ -1,10 +1,12 @@
-from project.classes.llm_thread import LlmThread
-
-# Need new debug prompt: allow model to think through it's thoughts, update code, test code, get console output, add debugging print statements
-# try to keep issue isolated, use the model to create it's own prompt that takes in all the background info it needs and create a prompt with only the necessary infomation
+from classes.llm_thread import LlmThread
 
 class DebugIssue:
-    """A class for debugging code."""
+    """
+    *** Currently Unused ***
+    
+    
+    A class for debugging code.
+    """
     def __init__(self, incoming_thread: LlmThread, client, logger):
         """
         Initialize DebugIssue with the previous conversation thread.
