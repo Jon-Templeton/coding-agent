@@ -21,9 +21,8 @@ This project implements an AI coding agent capable of autonomously building soft
 ## Usage
 
 1. Create a `secret_key.txt` file in the project root and add your Anthropic API key 
-2. Modify the `project_path` variable to set your desired project directory
-3. Run the main script: `main.py`
-4. Provide a project idea when prompted
+2. Run the main script: `main.py`
+3. Provide a project idea when prompted
 
 The script will then:
 1. Set up the project directory and logging
@@ -34,7 +33,8 @@ The script will then:
 ## Important Notes
 
 - Ensure you have the necessary permissions to create directories and files in the specified path
-- User confirmation is required before executing terminal commands or modifying files
+- User confirmation is required before executing terminal commands
+- Only files inside the porject directory can be accessed
 - This tool is designed to work autonomously, with minimal user intervention after the initial prompt
 
 ## Logging
