@@ -1,6 +1,5 @@
-<h1 style="text-align: center;">Single Prompt - AI Coding Agent</h1>
-
-<h3 style="text-align: center;"> This project implements an AI coding agent capable of autonomously building software projects based on a single user prompt. It leverages the Anthropic API to execute the entire development process, creating a fully functional project with minimal human intervention. </h2>
+<h1 align="center">Single Prompt - AI Coding Agent</h1>
+<h3 align="center"> This project implements an AI coding agent capable of autonomously building software projects based on a single user prompt. It leverages the Anthropic API to execute the entire development process, creating a fully functional project with minimal human intervention. </h3>
 
 ## Features 🤖
 
