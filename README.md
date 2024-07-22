@@ -51,6 +51,7 @@ This script executes terminal commands and modifies files on your system. Always
 - Limited to locally installable tools and packages; no web browsing capability
 - Complex projects may require human intervention
 - May not always produce optimal or bug-free code
+- Optimized for macOS
 
 ## Support 📨
 
