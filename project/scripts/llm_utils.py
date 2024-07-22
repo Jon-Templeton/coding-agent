@@ -75,7 +75,7 @@ def execute_terminal_command(command: str, command_description: str, project_pat
             return "User Denied Command Execution"
     
     try:
-        # TODO: if command launches an app, it will not return. Need to handle this.
+        # TODO: if command launches a process/app, it will not return. Need to handle this.
         
         # Run the command, capture output, use shell, and combine stdout and stderr
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=project_path)

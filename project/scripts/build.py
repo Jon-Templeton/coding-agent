@@ -66,7 +66,7 @@ def build_project(project: AiProject) -> None:
                     if terminal_output != "User Denied Command Execution":
                         analyze_terminal_commands((task["command"], task["command_description"]), terminal_output, project)
 
-                    # TODO: Track all commands run. Since llm has no memory between stages, it tries to run the same command again.
+                    # TODO: Save all commands. Since llm has no memory between stages, it occasionally tries to run the same command again.
                     
                 # Stage not complete. Continue building...
                 elif task["type"] == "Incomplete":
